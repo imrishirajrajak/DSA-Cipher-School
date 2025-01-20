@@ -1,0 +1,27 @@
+#include <iostream>  
+#include <vector>  
+#include <numeric>  
+
+using namespace std;  
+
+int naiveSum(const vector<int>& numbers) {  
+  int total = 0;  
+  for (int num : numbers) total += num;  
+  return total;  
+}  
+
+int recursiveSum(const vector<int>& numbers, int index = 0) {  
+  return index == numbers.size() ? 0 : numbers[index] + recursiveSum(numbers, index + 1);  
+}  
+
+int builtinSum(const vector<int>& numbers) {  
+  return accumulate(numbers.begin(), numbers.end(), 0);  
+}  
+
+int main() {  
+  vector<int> nums = {10, 20, 30, 40, 50};  
+  cout << "Naive sum: " << naiveSum(nums) << endl;  
+  cout << "Recursive sum: " << recursiveSum(nums) << endl;  
+  cout << "Built-in sum: " << builtinSum(nums) << endl;  
+  return 0;  
+}
