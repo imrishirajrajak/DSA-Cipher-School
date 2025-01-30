@@ -1,0 +1,110 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <list>
+
+using namespace std;
+
+int main() {
+    int m;
+    cin >> m;
+
+    string method;
+    cin >> method;
+
+    int q;
+    cin >> q;
+
+    if (method == "CHAINING") {
+        vector<list<int>> table(m);
+
+        for (int i = 0; i < q; ++i) {
+            string operation;
+            cin >> operation;
+
+            if (operation == "INSERT") {
+                int key;
+                cin >> key;
+                int index = key % m;
+                table[index].push_back(key);
+            } else if (operation == "SEARCH") {
+                int key;
+                cin >> key;
+                int index = key % m;
+                bool found = false;
+                for (int k : table[index]) {
+                    if (k == key) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    cout << "FOUND" << endl;
+                } else {
+                    cout << "NOT FOUND" << endl;
+                }
+            } else if (operation == "DELETE") {
+                int key;
+                cin >> key;
+                int index = key % m;
+                table[index].remove(key); 
+            }
+        }
+    } else if (method == "OPEN_ADDRESSING") {
+        vector<int> table(m, -1); // -1 indicates empty slot
+
+        for (int i = 0; i < q; ++i) {
+            string operation;
+            cin >> operation;
+
+            if (operation == "INSERT") {
+                int key;
+                cin >> key;
+                int index = key % m;
+                int originalIndex = index;
+                for (int j = 0; j < m; ++j) {  // Linear probing
+                    if (table[index] == -1) {
+                        table[index] = key;
+                        break;
+                    }
+                    index = (originalIndex + j + 1) % m; // Linear Probing
+                    if (j == m -1 && table[index] != -1) {
+                        break; // Table is full, key cannot be inserted.
+                    }
+                }
+            } else if (operation == "SEARCH") {
+                int key;
+                cin >> key;
+                int index = key % m;
+                int originalIndex = index;
+                bool found = false;
+                for (int j = 0; j < m; ++j) {
+                    if (table[index] == key) {
+                        found = true;
+                        break;
+                    }
+                     index = (originalIndex + j + 1) % m; // Linear Probing
+                }
+                if (found) {
+                    cout << "FOUND" << endl;
+                } else {
+                    cout << "NOT FOUND" << endl;
+                }
+            } else if (operation == "DELETE") {
+                int key;
+                cin >> key;
+                int index = key % m;
+                int originalIndex = index;
+                for (int j = 0; j < m; ++j) {
+                    if (table[index] == key) {
+                        table[index] = -2; // Mark as deleted (tombstone)
+                        break;
+                    }
+                    index = (originalIndex + j + 1) % m; // Linear Probing
+                }
+            }
+        }
+    }
+
+    return 0;
+}
