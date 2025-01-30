@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+
+    vector<string> table(n, ""); 
+    int q;
+    cin >> q;
+
+    for (int i = 0; i < q; ++i) {
+        string operation;
+        cin >> operation;
+
+        if (operation == "INSERT") {
+            int key;
+            string value;
+            cin >> key >> value;
+            if (key >= 0 && key < n) {
+                table[key] = value;
+            }
+        } else if (operation == "SEARCH") {
+            int key;
+            cin >> key;
+            if (key >= 0 && key < n) {
+                if (table[key] != "") {
+                    cout << table[key] << endl;
+                } else {
+                    cout << "NOT FOUND" << endl;
+                }
+            } else {
+                cout << "NOT FOUND" << endl; // Handle out of range
+            }
+
+        } else if (operation == "DELETE") {
+            int key;
+            cin >> key;
+            if (key >= 0 && key < n) {
+                table[key] = "";
+            }
+        }
+    }
+
+    return 0;
+}
